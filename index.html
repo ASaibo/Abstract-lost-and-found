@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lost & Found: Abstract Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(180deg, #0b2e1d, #04160d);
+      color: #f5f5f5;
+    }
+
+    header {
+      padding: 60px 20px;
+      text-align: center;
+      background: radial-gradient(circle, #145a32, #0b2e1d);
+      border-bottom: 2px solid rgba(255,255,255,0.1);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      margin: 0;
+    }
+
+    header p {
+      margin-top: 10px;
+      opacity: 0.85;
+    }
+
+    .snow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-image:
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(2px 2px at 200px 80px, #fff, transparent),
+        radial-gradient(1px 1px at 100px 150px, #fff, transparent);
+      animation: snow 10s linear infinite;
+      opacity: 0.4;
+    }
+
+    @keyframes snow {
+      from { background-position: 0 0; }
+      to { background-position: 0 500px; }
+    }
+
+    section {
+      max-width: 1000px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 25px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #d4efdf;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-family: inherit;
+      border-radius: 4px;
+      border: none;
+    }
+
+    textarea { resize: vertical; }
+
+    button {
+      background: #c0392b;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover { background: #e74c3c; }
+
+    .item {
+      border-bottom: 1px dashed rgba(255,255,255,0.2);
+      padding: 10px 0;
+    }
+
+    .meta {
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      margin-top: 20px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px;
+      opacity: 0.6;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="snow"></div>
+
+<header>
+  <h1>🎄 Lost & Found (Abstract Things)</h1>
+  <p>Operated by Archive Division · After Hours Dept</p>
+</header>
+
+<section id="homeView">
+
+  <div class="panel">
+    <h2>📜 Official Notice</h2>
+    <p><em>Issued by the Department of Seasonal Misplacement (DSM)</em></p>
+    <p>Every year around late December, an increase in reports is observed concerning the disappearance of non-physical assets.</p>
+    <p>The Department reminds citizens that most abstract items are <strong>temporarily unavailable</strong>, not permanently lost.</p>
+    <button class="nav-btn" onclick="goToForm()">Proceed to File a Case</button>
+  </div>
+
+  <div class="panel">
+    <h2>📂 Seasonal Misplacement Registry</h2>
+    <p>The central database for items that were definitely present earlier this month.</p>
+    <p class="meta">Status: Actively monitored · Accuracy: Unclear</p>
+  </div>
+
+  <div class="panel">
+    <h2>🎅 Santa’s Workshop (Affiliated)</h2>
+    <p>Handles large-scale distribution, selective memory, and unexplained disappearances.</p>
+    <ul class="meta">
+      <li><a href="#" style="color:#d4efdf">View open positions</a></li>
+      <li><a href="#" style="color:#d4efdf">Seasonal internships</a></li>
+      <li><a href="#" style="color:#d4efdf">Elf management trainee</a></li>
+    </ul>
+  </div>
+
+</section>
+
+<section id="formView" class="hidden">
+
+  <div class="panel">
+    <h2>Report a Lost Abstract Thing</h2>
+    <select id="category">
+      <option>Emotion</option>
+      <option>Idea</option>
+      <option>Motivation</option>
+      <option>Time</option>
+      <option>Confidence</option>
+      <option>Other</option>
+    </select>
+    <input id="name" placeholder="Name of the thing (e.g. Holiday spirit)" />
+    <textarea id="desc" placeholder="Last seen, emotional state, suspicious circumstances"></textarea>
+    <button onclick="reportLost()">Submit Report</button>
+    <button class="nav-btn" onclick="goHome()">Return to Notices</button>
+  </div>
+
+  <div class="panel">
+    <h2>Recently Lost</h2>
+    <div id="lostList"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Recently Found</h2>
+    <div id="foundList"></div>
+  </div>
+
+  <div id="postSubmit" class="hidden">
+    <div class="panel">
+      <h2>⚙ Actions Being Taken</h2>
+      <ul>
+        <li>Assigning the case a festive reference number</li>
+        <li>Forwarding details to the appropriate imaginary unit</li>
+        <li>Monitoring ambient holiday sentiment</li>
+        <li>Waiting to see if it resolves itself</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h2>🧤 Precautions for Next Time</h2>
+      <ul>
+        <li>Please write your name clearly on all abstract concepts</li>
+        <li>If no stocking is available, place intentions at a higher altitude</li>
+        <li>Avoid storing motivation near family discussions</li>
+        <li>Label emotions before midnight</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<footer>
+  <p>Archive Division · Seasonal Misplacement Registry</p>
+  <p>No refunds. No guarantees. Merry Christmas.</p>
+</footer>
+
+<script>
+  const lostList = document.getElementById('lostList');
+  const foundList = document.getElementById('foundList');
+
+  const foundPhrases = [
+    "Found but it ran away again",
+    "Possibly imaginary",
+    "Returned briefly then vanished",
+    "Wrapped under the wrong tree",
+    "Emotionally unavailable",
+    "May belong to someone else"
+  ];
+
+  function goToForm() {
+    document.getElementById('homeView').classList.add('hidden');
+    document.getElementById('formView').classList.remove('hidden');
+  }
+
+  function goHome() {
+    document.getElementById('formView').classList.add('hidden');
+    document.getElementById('homeView').classList.remove('hidden');
+  }
+
+  function reportLost() {
+    const cat = document.getElementById('category').value;
+    const name = document.getElementById('name').value || 'Unnamed thing';
+    const desc = document.getElementById('desc').value || 'Details unclear';
+
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `<strong>${name}</strong> (${cat})<br><span class="meta">${desc}</span>`;
+    lostList.prepend(div);
+
+    setTimeout(() => {
+      const f = document.createElement('div');
+      f.className = 'item';
+      f.innerHTML = `<strong>${name}</strong><br><span class="meta">${foundPhrases[Math.floor(Math.random()*foundPhrases.length)]}</span>`;
+      foundList.prepend(f);
+    }, Math.random() * 4000 + 2000);
+
+    document.getElementById('postSubmit').classList.remove('hidden');
+    document.getElementById('name').value = '';
+    document.getElementById('desc').value = '';
+  }
+</script>
+
+</body>
+</html>
